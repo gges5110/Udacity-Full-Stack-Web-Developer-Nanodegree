@@ -164,5 +164,6 @@ def open_movies_page(movies):
     url = os.path.abspath(output_file.name)
     webbrowser.open('file://' + url, new=2)
 
+# Create movies with pre-defined movies inside entertainment_center.py.
 my_movies = entertainment_center.entertainment_center()
 open_movies_page(my_movies)

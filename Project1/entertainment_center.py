@@ -1,3 +1,4 @@
+# This file simply creates a list of movies with their corresponding information.
 from media import Movie
 
 def entertainment_center():

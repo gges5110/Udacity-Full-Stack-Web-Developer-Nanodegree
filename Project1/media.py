@@ -1,3 +1,4 @@
+# A class to define the movie with four strings: title, youtube url, image url and youtube id
 
 class Movie:
     def __init__(self, title, trailer_youtube_url, poster_image_url,trailer_youtube_id):
