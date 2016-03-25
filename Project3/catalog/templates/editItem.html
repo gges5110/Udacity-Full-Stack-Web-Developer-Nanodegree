@@ -1,0 +1,67 @@
+{% extends "/base.html" %}
+{% block content %}
+
+<style>
+.demo-card-wide.mdl-card {
+  width: 512px;
+}
+.demo-card-wide > .mdl-card__menu {
+  color: #fff;
+}
+</style>
+
+<div class="mdl-cell mdl-cell--10-col mdl-cell--2-offset">
+    <div class="demo-card-wide mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title mdl-card--border">
+            <h3 class="mdl-card__title-text">Edit Item</h3>
+        </div>
+        <div class="mdl-card__supporting-text">
+
+            <form action="{{url_for('editItem', item_id = item.id)}}" method='POST'>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <label class="mdl-textfield__label" for='input_title'>Title</label>
+                    <input class="mdl-textfield__input" type="text" name='title' id='input_title' value='{{item.title}}'></input>
+                </div>
+
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <label class="mdl-textfield__label" for='input_description'>Description</label>
+                    <input class="mdl-textfield__input" type="text" name='description' id='input_description' value='{{item.description}}'></input>
+                </div>
+
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <label class="mdl-textfield__label" for='input_price'>Price</label>
+                    <input class="mdl-textfield__input" type="text" name='price' id='input_price' value='{{item.price}}'></input>
+                </div>
+
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <label class="mdl-textfield__label" for='input_picture'>Picture URL</label>
+                    <input class="mdl-textfield__input" type="text" name='picture' id='input_picture' value='{{item.picture}}'></input>
+                </div>
+
+                <div>
+                    <select name='catalog_id'>
+                        {% for catalog in categories %}
+                        {% if item.catalog_id == catalog.id %}
+                        <option value='{{catalog.id}}' selected="selected">{{catalog.name}}</option>
+                        {% else %}
+                        <option value='{{catalog.id}}'>{{catalog.name}}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div style="padding-top: 20px;">
+                    <input type='submit' value='Edit' class="mdl-button mdl-js-button mdl-button--colored mdl-button--raised mdl-js-ripple-effect"></input>
+                </div>
+            </form>
+        </div>
+
+        <div class="mdl-card__actions mdl-card--border">
+            <a href="{{url_for('single_catagory', catalog_id=item.catalog_id, item_id = item.id)}}"
+                class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Cancel
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

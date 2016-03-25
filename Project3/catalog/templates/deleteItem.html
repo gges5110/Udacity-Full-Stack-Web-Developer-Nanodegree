@@ -1,0 +1,30 @@
+{% extends "/base.html" %}
+{% block content %}
+
+<div class="mdl-cell mdl-cell--10-col mdl-cell--2-offset">
+    <div class="demo-card-wide mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title mdl-card--border">
+            <h3 class="mdl-card__title-text">Delete Item: {{item.title}}</h3>
+        </div>
+
+        <div class="mdl-card__supporting-text">
+            <p>Are you sure you want to delete?</p>
+            <form action="{{url_for('deleteItem', item_id = item.id)}}" method="POST">
+                <input type='submit' value='Delete' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"></input>
+            </form>
+        </div>
+
+
+        <div class="mdl-card__actions mdl-card--border">
+            <a href="{{url_for('single_catagory', catalog_id=item.catalog_id, item_id = item.id)}}"
+                class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-button--raised">Cancel
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<h1></h1>
+
+
+{% endblock %}
