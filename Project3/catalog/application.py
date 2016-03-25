@@ -25,6 +25,7 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
+# Index page
 @app.route('/')
 def main_page():
     categories = session.query(Catalog).all()
@@ -52,11 +53,13 @@ def main_page():
     return render_template('index.html', categories = categories, catagory_amount=catagory_amount,
             items = items, login = login, directory=directory, state = state, user=user)
 
-@app.route('/catalog/JSON')
+# API endpoint to get all the items
+@app.route('/catalog.json')
 def all_items_json():
     items = session.query(Item).all()
     return jsonify(Item=[i.serialize for i in items])
 
+# Single item page
 @app.route('/catalog/<int:catalog_id>/<int:item_id>')
 def single_catagory(catalog_id, item_id):
     categories = session.query(Catalog).all()
@@ -97,6 +100,7 @@ def single_catagory(catalog_id, item_id):
         return render_template('item_details.html', item = item, categories = categories,
             catagory_amount=catagory_amount, directory=directory, login=login, user=user)
 
+# Single catagory page
 @app.route('/catalog/<int:catalog_id>')
 def items_by_catalog(catalog_id):
     categories = session.query(Catalog).all()
@@ -129,6 +133,7 @@ def items_by_catalog(catalog_id):
         items = items, catagory = catagory, categories = categories,
         catagory_amount=catagory_amount, directory=directory, login=login, user=user)
 
+# REST API for creating item
 @app.route('/api/newItem', methods=['POST'])
 def newItem_API():
     if 'username' not in login_session:
@@ -144,6 +149,7 @@ def newItem_API():
     session.commit()
     return redirect(url_for('main_page'))
 
+# Page for editing item
 @app.route('/catalog/<int:item_id>/edit', methods=['GET', 'POST'])
 def editItem(item_id):
     if 'username' not in login_session:
@@ -199,6 +205,7 @@ def editItem(item_id):
         return render_template('editItem.html', item = item_to_edit, categories = categories, directory=directory,
                 catagory_amount=catagory_amount, login=login, user=user)
 
+# Page for deleting item
 @app.route('/catalog/<int:item_id>/delete', methods=['GET', 'POST'])
 def deleteItem(item_id):
     if 'username' not in login_session:
@@ -244,13 +251,7 @@ def deleteItem(item_id):
         return render_template('deleteItem.html', item = item_to_delete, categories = categories, directory=directory,
                 catagory_amount=catagory_amount, login=login, user=user)
 
-@app.route('/login')
-def showLogin():
-    state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
-    login_session['state'] = state
-    return render_template('login.html', state = state)
-    # return "The current session state is %s" %login_session['state']
-
+# page to connect with Google authorization
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
     # Validate state token
@@ -339,6 +340,7 @@ def gconnect():
     print "done!"
     return output
 
+# Disconnect with Google authorization
 @app.route('/gdisconnect')
 def gdisconnect():
     access_token = login_session['access_token']

@@ -87,12 +87,6 @@
         </style>
 
     </head>
-    <!--
-    <a href="">Login</a>
-
-    <a href="{{url_for('showLogin')}}">Login</a>
-    <a href="">Logout</a>
-     -->
 
 
     <body>
@@ -211,7 +205,7 @@
                             toastr.success("Successfully login!");
                             setTimeout(function() {
                                 window.location.href = "{{url_for('main_page')}}";
-                            }, 2000);                                                
+                            }, 2000);
                         } else if (authResult['error']) {
                             console.log('There was an error: ' + authResult['error']);
                         } else {
