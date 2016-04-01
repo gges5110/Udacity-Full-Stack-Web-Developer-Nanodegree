@@ -45,18 +45,31 @@ def main_page():
     directory_main['name'] = 'Catalog App'
     directory.append(directory_main)
 
-    user = getUserInfo(login_session['user_id'])
-    login = False
     if 'username' in login_session:
-        login = True
+        user = getUserInfo(login_session['user_id'])
+        return render_template('index.html', categories = categories, catagory_amount=catagory_amount,
+                items = items, login = True, directory=directory, state = state, user=user)
+    else:
+        return render_template('index.html', categories = categories, catagory_amount=catagory_amount,
+                items = items, login = False, directory=directory, state = state, user=None)
 
-    return render_template('index.html', categories = categories, catagory_amount=catagory_amount,
-            items = items, login = login, directory=directory, state = state, user=user)
 
 # API endpoint to get all the items
 @app.route('/catalog.json')
 def all_items_json():
     items = session.query(Item).all()
+    return jsonify(Item=[i.serialize for i in items])
+
+# for the item under the same category
+@app.route('/<int:catalog_id>/item.json')
+def all_items_catagory_json(catalog_id):
+    items = session.query(Item).filter_by(catalog_id=catalog_id).all()
+    return jsonify(Item=[i.serialize for i in items])
+
+# for each individual item
+@app.route('/<int:catalog_id>/<int:item_id>/item.json')
+def individual_item_json(catalog_id, item_id):
+    items = session.query(Item).filter_by(id=item_id).all()
     return jsonify(Item=[i.serialize for i in items])
 
 # Single item page
