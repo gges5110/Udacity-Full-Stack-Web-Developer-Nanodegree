@@ -17,6 +17,14 @@ DBSession = sessionmaker(bind=engine)
 # session.rollback()
 session = DBSession()
 
+# User
+user1 = User(name = "Hello World", email = "hello.world@gmail.com")
+session.add(user1)
+session.commit()
+
+user2 = User(name = "James Harden", email = "james.harden@gmail.com")
+session.add(user2)
+session.commit()
 
 #Menu for UrbanBurger
 catalog1 = Catalog(name = "Snowboarding")

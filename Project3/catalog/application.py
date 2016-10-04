@@ -85,7 +85,6 @@ def single_catagory(catalog_id, item_id):
     item = session.query(Item).filter_by(id = item_id).one()
     creator = getUserInfo(item.user_id)
 
-    user = getUserInfo(login_session['user_id'])
     login = True
     if 'username' not in login_session:
         login = False
@@ -110,6 +109,7 @@ def single_catagory(catalog_id, item_id):
         return render_template('public_item_details.html', item = item, categories = categories,
             catagory_amount=catagory_amount, directory=directory, login=login, user=user)
     else:
+        user = getUserInfo(login_session['user_id'])
         return render_template('item_details.html', item = item, categories = categories,
             catagory_amount=catagory_amount, directory=directory, login=login, user=user)
 
@@ -126,11 +126,6 @@ def items_by_catalog(catalog_id):
         items_in_catagory = session.query(Item).filter_by(catalog_id = c.id).all()
         catagory_amount.append(len(items_in_catagory))
 
-    user = getUserInfo(login_session['user_id'])
-    login = True
-    if 'username' not in login_session:
-        login = False
-
     directory = []
     directory_main = {}
     directory_main['link'] = url_for('main_page')
@@ -142,9 +137,17 @@ def items_by_catalog(catalog_id):
     directory_catalog['name'] = catagory.name
     directory.append(directory_catalog)
 
-    return render_template('items_by_catalog.html',
-        items = items, catagory = catagory, categories = categories,
-        catagory_amount=catagory_amount, directory=directory, login=login, user=user)
+    if 'username' not in login_session:
+        login = False
+        return render_template('items_by_catalog.html',
+            items = items, catagory = catagory, categories = categories,
+            catagory_amount=catagory_amount, directory=directory, login=login, user=None)
+    else:
+        user = getUserInfo(login_session['user_id'])
+        login = True
+        return render_template('items_by_catalog.html',
+            items = items, catagory = catagory, categories = categories,
+            catagory_amount=catagory_amount, directory=directory, login=login, user=user)
 
 # REST API for creating item
 @app.route('/api/newItem', methods=['POST'])
